@@ -76,7 +76,7 @@ class Res4NetCBAM():
             
             # Load model terbaik untuk konfigurasi ini
             model_path = f"{self.check_dir}/Res4Net_CBAM_{key}.pth"
-            model = Res4Net_CBAM(num_classes=n_classes).to(device)
+            model = Res4Net_CBAM(num_classes=n_classes).to(self.device)
             model.load_state_dict(torch.load(model_path))
             model.eval()
 
@@ -85,7 +85,7 @@ class Res4NetCBAM():
 
             with torch.no_grad():
                 for inputs, labels in self.val_loader:
-                    inputs, labels = inputs.to(device), labels.to(device)
+                    inputs, labels = inputs.to(self.device), labels.to(self.device)
                     outputs = model(inputs)
                     
                     # Simpan label asli
@@ -132,6 +132,7 @@ class Res4NetCBAM():
         self.n_class = num_classes
         self.check_dir = checkpoint_dir
         self.train_loader, self.val_loader = loader(path_data, batch_size)
+        self.device = device
         optimizers = {
             'Adam': optim.Adam, # Dengan Adam 
             # Nanti ditambahkan AdaGrad Optimizer
@@ -267,7 +268,7 @@ class Res4NetCBAM():
 
             with torch.no_grad():
                 for inputs, labels in self.val_loader:
-                    inputs, labels = inputs.to(device), labels.to(device)
+                    inputs, labels = inputs.to(self.device), labels.to(self.device)
                     outputs = model(inputs)
                     _, predicted = torch.max(outputs, 1)
                     all_labels.extend(labels.cpu().numpy())

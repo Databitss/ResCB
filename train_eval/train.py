@@ -259,7 +259,7 @@ class Res4NetCBAM():
             
             # Load model terbaik untuk konfigurasi ini
             model_path = f"{self.check_dir}/Res4Net_CBAM_{key}.pth"
-            model = Res4Net_CBAM(num_classes=3).to(device)
+            model = Res4Net_CBAM(num_classes=3).to(self.device)
             model.load_state_dict(torch.load(model_path))
             model.eval()
 
